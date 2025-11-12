@@ -1,4 +1,4 @@
-export const LoginBanner = () => {
+export const LoginRegisterBanner = () => {
   return (
     <div className="flex-1 hidden lg:flex">
       <div

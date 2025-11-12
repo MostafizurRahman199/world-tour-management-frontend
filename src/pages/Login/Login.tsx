@@ -1,4 +1,4 @@
-import { LoginBanner } from "./_component/LoginBanner";
+import { LoginRegisterBanner } from "@/components/common/LoginRegister/LoginRegisterBanner";
 import { LoginForm } from "./_component/LoginForm";
 
 
@@ -16,7 +16,7 @@ const Login = () => {
   return (
     <div className="min-h-screen w-full flex">
       <LoginForm onSubmit={handleSubmit} onGoogleLogin={handleGoogleLogin} />
-      <LoginBanner />
+      <LoginRegisterBanner />
     </div>
   );
 };
