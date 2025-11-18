@@ -20,9 +20,10 @@ type FormData = z.infer<typeof formSchema>;
 interface LoginFormProps {
   onSubmit: (data: FormData) => void;
   onGoogleLogin: () => void;
+  apiError?: string; // Add this prop for API errors
 }
 
-export const LoginForm = ({ onSubmit, onGoogleLogin }: LoginFormProps) => {
+export const LoginForm = ({ onSubmit, onGoogleLogin, apiError }: LoginFormProps) => {
   const {
     register,
     handleSubmit,
@@ -41,6 +42,13 @@ export const LoginForm = ({ onSubmit, onGoogleLogin }: LoginFormProps) => {
           </CardHeader>
 
           <CardContent className="space-y-6">
+            {/* Display API error message */}
+            {apiError && (
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm">
+                {apiError}
+              </div>
+            )}
+
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <FormInput
                 label="Email"
@@ -87,9 +95,7 @@ export const LoginForm = ({ onSubmit, onGoogleLogin }: LoginFormProps) => {
               size="lg"
               fullWidth
               onClick={onGoogleLogin}
-              leftIcon={
-                <GoogleIcon/>
-              }
+              leftIcon={<GoogleIcon />}
               className="cursor-pointer"
             >
               Continue with Google

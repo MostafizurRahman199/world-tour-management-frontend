@@ -1,8 +1,11 @@
+// src/routes/index.tsx
+
 import App from "@/App";
 import AdminLayout from "@/components/layout/AdminLayout";
 import About from "@/pages/AboutPages/About";
 import Analytics from "@/pages/Analytics";
 import Login from "@/pages/Login/Login";
+import Verify from "@/pages/OTP/Verify";
 import Register from "@/pages/Register/Register";
 import { createBrowserRouter } from "react-router";
 
@@ -34,5 +37,9 @@ export const router = createBrowserRouter([
   {
     Component: Register,
     path: "register",
+  },
+  {
+    Component: Verify,
+    path: "verify",
   },
 ]);

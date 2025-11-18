@@ -2,6 +2,7 @@ import { useState } from "react";
 import { BookOpen, Info, LifeBuoy, ChevronDown, Menu, X } from "lucide-react";
 import { ModeToggle } from "../ui/mode-toggle";
 import { Link } from "react-router-dom";
+import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
 
 // Navigation links array
 const navigationLinks = [
@@ -55,6 +56,27 @@ const navigationLinks = [
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const { data, isLoading, error } = useUserInfoQuery(undefined);
+  const user = data?.data?.data;
+
+
+  
+
+  // Optional loading state
+  if (isLoading) {
+    console.log("Loading user info...");
+  }
+
+  console.log(data);
+
+  // If user is not logged in
+  if (error) {
+    // Show login/register buttons normally
+  }
+
+  const handleLogout = async () => {
+   
+  };
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -154,19 +176,55 @@ export default function Navbar() {
 
           {/* Auth Buttons - Desktop */}
           <div className="hidden lg:flex items-center space-x-3">
-            <Link
-              to="/login"
-              className="px-6 py-2.5 font-semibold text-white/90 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-300"
-            >
-              Login
-            </Link>
-            <Link
-              to="/register"
-              className="px-6 py-2.5 font-semibold bg-white text-[#8F87F1] hover:bg-gray-100 hover:scale-105 shadow-lg hover:shadow-xl rounded-xl transition-all duration-300"
-            >
-              Register
-            </Link>
-            <ModeToggle/>
+            {isLoading && <span className="text-white/80">Loading...</span>}
+
+            {!isLoading && !user && (
+              <>
+                <Link
+                  to="/login"
+                  className="px-6 py-2.5 font-semibold text-white/90 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-300"
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/register"
+                  className="px-6 py-2.5 font-semibold bg-white text-[#8F87F1] hover:bg-gray-100 hover:scale-105 shadow-lg hover:shadow-xl rounded-xl transition-all duration-300"
+                >
+                  Register
+                </Link>
+                <ModeToggle />
+              </>
+            )}
+
+            {/* Logged-in UI */}
+            {user && (
+              <div className="relative group">
+                <button className="flex items-center gap-2">
+                  <img
+                    src={user.picture}
+                    alt="profile"
+                    className="w-10 h-10 rounded-full border-2 border-white shadow-md cursor-pointer"
+                  />
+                </button>
+
+                {/* Dropdown */}
+                <div className="absolute right-0 mt-3 w-56 bg-white rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                  <div className="p-4 border-b">
+                    <p className="font-semibold text-gray-800">{user.name}</p>
+                    <p className="text-sm text-gray-500">{user.email}</p>
+                  </div>
+
+                  <button
+                    onClick={handleLogout}
+                    className="w-full text-left px-4 py-3 text-sm text-red-600 font-semibold hover:bg-red-50 rounded-b-xl transition"
+                  >
+                    Logout
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <ModeToggle />
           </div>
 
           {/* Mobile Menu Button */}
@@ -245,20 +303,44 @@ export default function Navbar() {
 
               {/*-------- Mobile Auth Buttons --------*/}
               <div className="pt-4 space-y-3">
-                <Link
-                  to="/login"
-                  className="block w-full text-center px-6 py-3 font-semibold text-[#8F87F1] border border-[#8F87F1] hover:bg-[#8F87F1] hover:text-white rounded-xl transition-all duration-300"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Login
-                </Link>
-                <Link
-                  to="/register"
-                  className="block w-full text-center px-6 py-3 font-semibold bg-gradient-to-r from-[#C68EFD] to-[#8F87F1] text-white hover:shadow-xl rounded-xl transition-all duration-300"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Register
-                </Link>
+                {!user && (
+                  <>
+                    <Link
+                      to="/login"
+                      className="block w-full text-center px-6 py-3 font-semibold text-[#8F87F1] border border-[#8F87F1] hover:bg-[#8F87F1] hover:text-white rounded-xl transition-all duration-300"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      Login
+                    </Link>
+                    <Link
+                      to="/register"
+                      className="block w-full text-center px-6 py-3 font-semibold bg-gradient-to-r from-[#C68EFD] to-[#8F87F1] text-white hover:shadow-xl rounded-xl transition-all duration-300"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      Register
+                    </Link>
+                  </>
+                )}
+
+                {/* Logged-in mobile UI */}
+                {user && (
+                  <div className="p-4 bg-white rounded-xl shadow-lg">
+                    <div className="flex items-center gap-3 mb-4">
+                      <img src={user.picture} className="w-12 h-12 rounded-full border" alt="profile" />
+                      <div>
+                        <p className="font-semibold text-gray-800">{user.name}</p>
+                        <p className="text-sm text-gray-500">{user.email}</p>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={handleLogout}
+                      className="w-full px-4 py-3 text-center font-semibold text-red-600 border border-red-300 rounded-xl hover:bg-red-50 transition"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
               </div>
             </nav>
           </div>

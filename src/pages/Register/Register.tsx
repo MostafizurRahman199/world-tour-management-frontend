@@ -2,9 +2,11 @@ import { LoginRegisterBanner } from "@/components/common/LoginRegister/LoginRegi
 import { RegisterForm } from "./_component/RegisterForm";
 import { useRegisterApiMutation } from "@/redux/features/auth/auth.api";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [registerApi] = useRegisterApiMutation();
+  const navigate = useNavigate();
   
   const handleSubmit = async (data: any) => {
     try {
@@ -13,10 +15,11 @@ const Register = () => {
         email: data.email,
         password: data.password,
       };
-      console.log(userInfo);
-      const response = await registerApi(userInfo).unwrap();
-       toast.success("Registration successful! You can now login.");
-      console.log("Registration success:", response);
+      await registerApi(userInfo).unwrap();
+      toast.success("Registration successful! You can now login.");
+      navigate("/verify")
+      // console.log(userInfo);
+      // console.log("Registration success:", response);
     } catch (err) {
       toast.error("Registration failed. Please try again.");
     }
