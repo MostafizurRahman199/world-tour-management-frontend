@@ -1,11 +1,14 @@
+
+
 // src/redux/features/auth/auth.api.ts
 
-
-
 import { baseApi } from "@/redux/baseApi";
-import type {  ISendOtpResponse, ISentOTP, VerifyOtpRequest, VerifyOtpResponse } from "@/types/auth.type";
-
-
+import type {
+  ISendOtpResponse,
+  ISentOTP,
+  VerifyOtpRequest,
+  VerifyOtpResponse,
+} from "@/types/auth.type";
 
 export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -14,6 +17,7 @@ export const authApi = baseApi.injectEndpoints({
         url: "/user/register",
         method: "POST",
         data: userInfo,
+        withCredentials: true, // IMPORTANT
       }),
     }),
 
@@ -22,24 +26,25 @@ export const authApi = baseApi.injectEndpoints({
         url: "/auth/login",
         method: "POST",
         data: userInfo,
+        withCredentials: true, // SEND + RECEIVE HTTPONLY COOKIE
       }),
     }),
 
-    // SEND OTP
     sendOtpApi: builder.mutation<ISendOtpResponse, ISentOTP>({
       query: (payload) => ({
         url: "/otp/send",
         method: "POST",
-        data: payload, // { email }
+        data: payload,
+        withCredentials: true,
       }),
     }),
 
-    // VERIFY OTP
     verifyOtpApi: builder.mutation<VerifyOtpResponse, VerifyOtpRequest>({
       query: (payload) => ({
         url: "/otp/verify",
         method: "POST",
-        data: payload, // { email, otp }
+        data: payload,
+        withCredentials: true,
       }),
     }),
 
@@ -47,9 +52,21 @@ export const authApi = baseApi.injectEndpoints({
       query: () => ({
         url: "/user/me",
         method: "GET",
+        withCredentials: true,
       }),
+      providesTags: ["User"],
     }),
 
+    logout: builder.mutation({
+      query: () => ({
+        url: "/auth/logout",
+        method: "POST",
+        withCredentials: true,
+      }),
+      invalidatesTags: ["User"],
+    }),
+
+    
   }),
 });
 
@@ -59,4 +76,5 @@ export const {
   useSendOtpApiMutation,
   useVerifyOtpApiMutation,
   useUserInfoQuery,
+  useLogoutMutation,
 } = authApi;
