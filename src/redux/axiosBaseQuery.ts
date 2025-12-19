@@ -1,3 +1,7 @@
+
+
+
+
 // 📂 src/redux/axiosBaseQuery.ts
 
 import { axiosInstance } from "@/lib/axios";
@@ -10,21 +14,32 @@ export const axiosBaseQuery =
       url: string;
       method?: AxiosRequestConfig["method"];
       data?: AxiosRequestConfig["data"];
+      body?: AxiosRequestConfig["data"]; // ✅ Add support for 'body' (RTK Query uses 'body')
       params?: AxiosRequestConfig["params"];
       headers?: AxiosRequestConfig["headers"];
     },
     unknown,
     unknown
   > =>
-  async ({ url, method, data, params, headers }) => {
+  async ({ url, method, data, body, params, headers }) => {
     try {
+      // ✅ Use 'body' if provided, otherwise use 'data'
+      const requestData = body || data;
+
+      // ✅ Auto-detect FormData and set proper headers
+      const isFormData = requestData instanceof FormData;
+      
       const result = await axiosInstance({
         url,
         method,
-        data,
+        data: requestData,
         params,
-        headers,
-        withCredentials: true, // 🔥 required for cookies
+        headers: {
+          ...headers,
+          // ✅ Let axios handle Content-Type for FormData
+          ...(isFormData ? {} : headers),
+        },
+        withCredentials: true,
       });
 
       return { data: result.data };

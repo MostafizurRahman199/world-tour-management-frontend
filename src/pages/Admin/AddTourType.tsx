@@ -43,9 +43,7 @@ const handleConfirmDelete = async () => {
 
   try {
     await deleteTourType(selectedId).unwrap();
-
     toast.success("Tour type deleted successfully");
-
     setOpenConfirm(false);
     setSelectedId(null);
   } catch (error: any) {

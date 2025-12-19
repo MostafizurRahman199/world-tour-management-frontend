@@ -24,12 +24,12 @@ const ConfirmDialog = ({
 }: ConfirmDialogProps) => {
   return (
     <Dialog open={open} onOpenChange={onCancel}>
-      <DialogContent className="bg-white max-w-sm rounded-xl">
+      <DialogContent className="bg-white max-w-[calc(100%-2rem)] rounded-xl">
         <DialogHeader>
-          <DialogTitle className="text-red-600">{title}</DialogTitle>
+          <DialogTitle className=" text-red-600">{title}</DialogTitle>
         </DialogHeader>
 
-        <p className="text-sm text-gray-600 py-2">{description}</p>
+        <p className="text-md text-gray-600 py-2">{description}</p>
 
         <DialogFooter>
           <Button variant="animated" onClick={onCancel}>
