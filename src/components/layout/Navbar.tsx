@@ -3,11 +3,12 @@ import { BookOpen, Info, LifeBuoy, ChevronDown, Menu, X } from "lucide-react";
 import { ModeToggle } from "../ui/mode-toggle";
 import { Link } from "react-router-dom";
 import { authApi, useLogoutMutation, useUserInfoQuery } from "@/redux/features/auth/auth.api";
-import DropDown from "../common/Navbar/DropDown";
+
 import MainIcon from "@/assets/icons/Navbar/MainIcon";
 import { useDispatch } from "react-redux";
 import { toast } from "sonner";
 import { ROLE } from "@/constants/role";
+import DropDown from "../common/Navbar/Dropdown";
 
 // Navigation links array
 const navigationLinks = [
@@ -153,7 +154,7 @@ export default function Navbar() {
                               href={item.href}
                               className="block p-3 rounded-xl hover:bg-gradient-to-r hover:from-[#C68EFD]/10 hover:to-[#8F87F1]/10 transition-all duration-300 group/item"
                             >
-                              {link.type === "icon" && item.icon && (
+                              {link.type === "icon" && 'icon' in item && item.icon && (
                                 <div className="flex items-center space-x-3">
                                   <div className="w-8 h-8 bg-gradient-to-r from-[#C68EFD] to-[#8F87F1] rounded-lg flex items-center justify-center group-hover/item:scale-110 transition-transform duration-300">
                                     <item.icon className="w-4 h-4 text-white" />
@@ -169,7 +170,9 @@ export default function Navbar() {
                                   <div className="font-semibold text-gray-800 group-hover/item:text-[#8F87F1] transition-colors">
                                     {item.label}
                                   </div>
-                                  <p className="text-sm text-gray-600 leading-relaxed">{item?.description}</p>
+                                  {'description' in item && (
+                                    <p className="text-sm text-gray-600 leading-relaxed">{item.description}</p>
+                                  )}
                                 </div>
                               )}
 
@@ -186,7 +189,7 @@ export default function Navbar() {
                   </>
                 ) : (
                   <Link
-                    to={link.href}
+                    to={link.href!}
                     className="px-4 py-2.5 font-semibold text-white/90 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-300 block"
                   >
                     {link.label}
@@ -263,7 +266,7 @@ export default function Navbar() {
                             className="block px-3 py-2.5 rounded-lg hover:bg-gradient-to-r hover:from-[#C68EFD]/10 hover:to-[#8F87F1]/10 text-gray-700 hover:text-[#8F87F1] transition-all duration-300"
                             onClick={() => setIsMobileMenuOpen(false)}
                           >
-                            {link.type === "icon" && item.icon && (
+                            {link.type === "icon" && 'icon' in item && item.icon && (
                               <div className="flex items-center space-x-3">
                                 <div className="w-6 h-6 bg-gradient-to-r from-[#C68EFD] to-[#8F87F1] rounded-md flex items-center justify-center">
                                   <item.icon className="w-3 h-3 text-white" />
@@ -275,7 +278,7 @@ export default function Navbar() {
                             {link.type === "description" && (
                               <div className="space-y-1">
                                 <div className="font-medium">{item.label}</div>
-                                <p className="text-xs text-gray-600">{item.description}</p>
+                                {'description' in item && <p className="text-xs text-gray-600">{item.description}</p>}
                               </div>
                             )}
 
@@ -286,7 +289,7 @@ export default function Navbar() {
                     </div>
                   ) : (
                     <Link
-                      to={link.href}
+                      to={link.href!}
                       className="block px-3 py-2.5 font-semibold text-gray-700 hover:text-[#8F87F1] rounded-lg hover:bg-gradient-to-r hover:from-[#C68EFD]/10 hover:to-[#8F87F1]/10 transition-all duration-300 border-b border-gray-200/30"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >

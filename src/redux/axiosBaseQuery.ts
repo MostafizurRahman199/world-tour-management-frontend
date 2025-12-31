@@ -1,7 +1,3 @@
-
-
-
-
 // 📂 src/redux/axiosBaseQuery.ts
 
 import { axiosInstance } from "@/lib/axios";

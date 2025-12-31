@@ -8,7 +8,6 @@ import { toast } from "sonner";
 
 import { useGetAllDivisionsQuery, useDeleteDivisionMutation } from "@/redux/features/division/division.api";
 import AddDivisionModal from "@/components/modules/Admin/Division/AddDivisionModal";
-
 import ConfirmDialog from "@/components/ui/confirm-dialog";
 import EditDivisionModal from "@/components/modules/Admin/Division/EditDivisionModal";
 
@@ -16,7 +15,15 @@ const AddDivision = () => {
   const [openAddModal, setOpenAddModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
-  const [editName, setEditName] = useState("");
+  const [editData, setEditData] = useState<{
+    name: string;
+    description?: string;
+    thumbnail?: string;
+  }>({
+    name: "",
+    description: "",
+    thumbnail: "",
+  });
   const [openConfirm, setOpenConfirm] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
@@ -25,9 +32,13 @@ const AddDivision = () => {
 
   const divisions = data?.data?.data || [];
 
-  const handleEdit = (id: string, name: string) => {
+  const handleEdit = (id: string, division: any) => {
     setEditId(id);
-    setEditName(name);
+    setEditData({
+      name: division.name,
+      description: division.description || "",
+      thumbnail: division.thumbnail || "",
+    });
     setOpenEditModal(true);
   };
 
@@ -84,7 +95,7 @@ const AddDivision = () => {
                 <td className="px-4 py-3">
                   <div className="flex justify-center gap-3">
                     <button
-                      onClick={() => handleEdit(item._id, item.name)}
+                      onClick={() => handleEdit(item._id, item)}
                       className="p-2 rounded-md text-[#8F87F1] hover:bg-[#8F87F1]/10 transition"
                       title="Edit"
                     >
@@ -112,8 +123,15 @@ const AddDivision = () => {
       <EditDivisionModal
         open={openEditModal}
         divisionId={editId}
-        initialName={editName}
-        onClose={() => setOpenEditModal(false)}
+        initialData={editData}
+        onClose={() => {
+          setOpenEditModal(false);
+          setEditData({
+            name: "",
+            description: "",
+            thumbnail: "",
+          });
+        }}
       />
       <ConfirmDialog
         open={openConfirm}

@@ -25,7 +25,6 @@ axiosInstance.interceptors.response.use(
     // If accessToken expired
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-
       try {
         // backend sets new accessToken cookie automatically
         await axiosInstance.get("/auth/refresh-token");

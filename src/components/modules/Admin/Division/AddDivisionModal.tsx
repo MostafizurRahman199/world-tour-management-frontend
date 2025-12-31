@@ -14,6 +14,7 @@ interface AddDivisionModalProps {
 }
 
 const AddDivisionModal: React.FC<AddDivisionModalProps> = ({ open, onClose }) => {
+ 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [file, setFile] = useState<File | null>(null);
@@ -60,6 +61,9 @@ const AddDivisionModal: React.FC<AddDivisionModalProps> = ({ open, onClose }) =>
       toast.error(err?.data?.message || "Something went wrong");
     }
   };
+
+
+  
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
@@ -114,3 +118,4 @@ const AddDivisionModal: React.FC<AddDivisionModalProps> = ({ open, onClose }) =>
 };
 
 export default AddDivisionModal;
+
