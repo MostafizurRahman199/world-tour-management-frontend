@@ -9,6 +9,8 @@ import { toast } from "sonner";
 import { useAddTourMutation, useGetTourTypeQuery } from "@/redux/features/Tour/tour.api";
 import { useGetAllDivisionsQuery } from "@/redux/features/division/division.api";
 import { CustomSelect } from "@/components/ui/custom-select";
+import { DatePickerString } from "@/components/ui/DatePickerString";
+import { FormTextArea } from "@/components/ui/Form/Form-textarea";
 
 
 interface AddTourModalProps {
@@ -72,21 +74,21 @@ const ArrayInputSection = React.memo(
     );
 
     return (
-      <div className="space-y-2">
+      <div className="space-y-2 ">
         <h4 className="text-sm font-medium text-gray-700">{title}</h4>
         <div className="flex gap-2">
-          <input
+          <FormInput
+            wrapperClassName="flex-1" // Use wrapperClassName instead of className
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder={placeholder}
-            className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-purple-500 focus:border-transparent text-sm"
           />
           <button
             type="button"
             onClick={handleAddItem}
-            className="px-3 py-2 bg-purple-100 text-purple-600 rounded-md hover:bg-purple-200 transition-colors"
+            className="px-4 py-2 bg-purple-100 text-purple-600 rounded-full hover:bg-purple-200 transition-colors flex-shrink-0"
           >
             <Plus size={16} />
           </button>
@@ -301,7 +303,7 @@ const AddTourModal: React.FC<AddTourModalProps> = ({ open, onClose, onSuccess })
 
         <div className="space-y-6 py-4">
           {/* Basic Information */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
             <FormInput
               label="Title *"
               name="title"
@@ -339,7 +341,7 @@ const AddTourModal: React.FC<AddTourModalProps> = ({ open, onClose, onSuccess })
               min="1"
             />
 
-            <FormInput
+            {/* <FormInput
               label="Start Date"
               name="startDate"
               type="date"
@@ -353,6 +355,23 @@ const AddTourModal: React.FC<AddTourModalProps> = ({ open, onClose, onSuccess })
               type="date"
               value={formData.endDate}
               onChange={handleInputChange}
+            /> */}
+
+            <DatePickerString
+              label="Start Date"
+              value={formData.startDate}
+              onChange={(value) => setFormData((prev) => ({ ...prev, startDate: value }))}
+              placeholder="Select start date"
+              error={errors.startDate}
+            />
+
+            <DatePickerString
+              label="End Date"
+              value={formData.endDate}
+              onChange={(value) => setFormData((prev) => ({ ...prev, endDate: value }))}
+              placeholder="Select end date"
+              minDate={formData.startDate} // Prevent selecting end date before start date
+              error={errors.endDate}
             />
 
             <FormInput
@@ -432,38 +451,50 @@ const AddTourModal: React.FC<AddTourModalProps> = ({ open, onClose, onSuccess })
           </div> */}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <CustomSelect
-                        value={division}
-                        onChange={setDivision}
-                        options={divisions}
-                        label="Division"
-                        placeholder="Select Division"
-                        error={errors.division}
-                        required
-                      />
-          
-                      <CustomSelect
-                        value={tourType}
-                        onChange={setTourType}
-                        options={tourTypes}
-                        label="Tour Type"
-                        placeholder="Select Tour Type"
-                        error={errors.tourType}
-                        loading={isLoading}
-                        required
-                      />
-                    </div>
+            <CustomSelect
+              value={division}
+              onChange={setDivision}
+              options={divisions}
+              label="Division"
+              placeholder="Select Division"
+              error={errors.division}
+              required
+            />
+
+            <CustomSelect
+              value={tourType}
+              onChange={setTourType}
+              options={tourTypes}
+              label="Tour Type"
+              placeholder="Select Tour Type"
+              error={errors.tourType}
+              loading={isLoading}
+              required
+            />
+          </div>
 
           {/* Description */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
-            <textarea
+            {/* <textarea
               name="description"
               value={formData.description}
               onChange={handleInputChange}
               rows={3}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-purple-500 focus:border-transparent text-sm"
               placeholder="Enter tour description"
+            /> */}
+            <FormTextArea
+              name="description"
+              label="Description"
+              value={formData.description}
+              onChange={handleInputChange}
+              rows={4}
+              placeholder="Enter tour description"
+              // Optional: Add an icon
+              // icon={<MessageSquare className="h-4 w-4" />}
+              // Optional: Add error message
+              // error="Description is required"
             />
           </div>
 
@@ -517,7 +548,7 @@ const AddTourModal: React.FC<AddTourModalProps> = ({ open, onClose, onSuccess })
           </div>
 
           {/* Array Inputs */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
             <ArrayInputSection
               title="Included"
               items={included}
