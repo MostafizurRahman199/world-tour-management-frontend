@@ -6,7 +6,7 @@ const Footer: React.FC = () => {
   return (
     <footer className="bg-gradient-to-r from-[#C68EFD] via-[#A78BFA] to-[#8F87F1] text-white">
       {/* Main Footer Content */}
-      <div className="container mx-auto px-6 sm:px-12 lg:px-20 py-16">
+      <div className="max-w-7xl mx-auto px-4 xl:px-0 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
           {/* Brand Section */}
           <div className="lg:col-span-1 space-y-6">
@@ -102,7 +102,7 @@ const Footer: React.FC = () => {
               Subscribe to our newsletter for exclusive deals, travel tips, and destination highlights.
             </p>
 
-            <form className="space-y-4">
+            {/* <form className="space-y-4">
               <div className="relative">
                 <input
                   type="email"
@@ -113,7 +113,7 @@ const Footer: React.FC = () => {
               <Button type="submit" variant="animated" size="lg" fullWidth className="mt-4">
                 Subscribe
               </Button>
-            </form>
+            </form> */}
 
             {/* Social Links */}
             <div className="pt-4">

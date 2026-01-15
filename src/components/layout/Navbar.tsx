@@ -70,6 +70,7 @@ export default function Navbar() {
   const [logout] = useLogoutMutation();
   const { data, isLoading, error } = useUserInfoQuery(undefined);
   const user = data?.data?.data;
+  console.log("Navbar user ---------> ",user);
   const dispatch = useDispatch();
 
   // Helper function to check if a link should be visible based on user role
@@ -117,8 +118,8 @@ export default function Navbar() {
   const filteredLinks = getFilteredLinks();
 
   return (
-    <header className="bg-gradient-to-r from-[#C68EFD] to-[#8F87F1] text-white shadow-lg sticky top-0 z-50 backdrop-blur-sm bg-white/10">
-      <div className="container mx-auto px-4 md:px-6">
+    <header className="bg-gradient-to-r from-[#C68EFD] to-[#8F87F1] text-white shadow-lg sticky top-0 z-50 backdrop-blur-sm bg-white/10 ">
+      <div className="max-w-7xl mx-auto px-4 xl:px-0">
         <div className="flex h-20 items-center justify-between">
           {/* Logo */}
           <a href="/" className="flex items-center space-x-3 group">
@@ -154,7 +155,7 @@ export default function Navbar() {
                               href={item.href}
                               className="block p-3 rounded-xl hover:bg-gradient-to-r hover:from-[#C68EFD]/10 hover:to-[#8F87F1]/10 transition-all duration-300 group/item"
                             >
-                              {link.type === "icon" && 'icon' in item && item.icon && (
+                              {link.type === "icon" && "icon" in item && item.icon && (
                                 <div className="flex items-center space-x-3">
                                   <div className="w-8 h-8 bg-gradient-to-r from-[#C68EFD] to-[#8F87F1] rounded-lg flex items-center justify-center group-hover/item:scale-110 transition-transform duration-300">
                                     <item.icon className="w-4 h-4 text-white" />
@@ -170,7 +171,7 @@ export default function Navbar() {
                                   <div className="font-semibold text-gray-800 group-hover/item:text-[#8F87F1] transition-colors">
                                     {item.label}
                                   </div>
-                                  {'description' in item && (
+                                  {"description" in item && (
                                     <p className="text-sm text-gray-600 leading-relaxed">{item.description}</p>
                                   )}
                                 </div>
@@ -266,7 +267,7 @@ export default function Navbar() {
                             className="block px-3 py-2.5 rounded-lg hover:bg-gradient-to-r hover:from-[#C68EFD]/10 hover:to-[#8F87F1]/10 text-gray-700 hover:text-[#8F87F1] transition-all duration-300"
                             onClick={() => setIsMobileMenuOpen(false)}
                           >
-                            {link.type === "icon" && 'icon' in item && item.icon && (
+                            {link.type === "icon" && "icon" in item && item.icon && (
                               <div className="flex items-center space-x-3">
                                 <div className="w-6 h-6 bg-gradient-to-r from-[#C68EFD] to-[#8F87F1] rounded-md flex items-center justify-center">
                                   <item.icon className="w-3 h-3 text-white" />
@@ -278,7 +279,7 @@ export default function Navbar() {
                             {link.type === "description" && (
                               <div className="space-y-1">
                                 <div className="font-medium">{item.label}</div>
-                                {'description' in item && <p className="text-xs text-gray-600">{item.description}</p>}
+                                {"description" in item && <p className="text-xs text-gray-600">{item.description}</p>}
                               </div>
                             )}
 
@@ -321,7 +322,14 @@ export default function Navbar() {
                 )}
 
                 {/* Logged-in mobile UI */}
-                {user && <DropDown user={user} handleLogout={handleLogout} isMobile={true} />}
+                {user && (
+                  <DropDown
+                    user={user}
+                    handleLogout={handleLogout}
+                    isMobile={true}
+                    onLinkClick={() => setIsMobileMenuOpen(false)}
+                  />
+                )}
               </div>
             </nav>
           </div>

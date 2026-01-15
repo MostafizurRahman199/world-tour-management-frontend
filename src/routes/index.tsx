@@ -15,6 +15,11 @@ import Bookings from "@/pages/User/Bookings";
 import { withAuth } from "@/utils/withAuth";
 import Unauthorized from "@/pages/Unauthorized/Unauthorized";
 import { ROLE } from "@/constants/role";
+import Tour from "@/pages/Tour/Tour";
+import TourDetails from "@/pages/Tour/TourDetails";
+import HomePage from "@/components/modules/homepage/HomePage";
+import Booking from "@/pages/Booking/Booking";
+import Profile from "@/pages/Profile/Profile";
 
 export const router = createBrowserRouter([
   {
@@ -22,9 +27,29 @@ export const router = createBrowserRouter([
     path: "/",
     children: [
       {
+        Component: HomePage,
+        path: "/",
+      },
+      {
         Component: About,
         path: "about",
       },
+      {
+        Component: Tour,
+        path: "tours",
+      },
+      {
+        Component: TourDetails,
+        path: "tours/:id",
+      },
+      {
+        Component: Booking,
+        path: "booking/:id",
+      },
+      {
+        Component: Profile,
+        path: "profile",
+      }
     ],
   },
   {

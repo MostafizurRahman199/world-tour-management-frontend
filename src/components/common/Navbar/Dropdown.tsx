@@ -1,3 +1,4 @@
+import Button from "@/components/ui/CustomUI/Button";
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -9,9 +10,10 @@ interface DropDownProps {
   };
   handleLogout: () => void;
   isMobile: boolean;
+  onLinkClick?: () => void;
 }
 
-const DropDown: React.FC<DropDownProps> = ({ user, handleLogout, isMobile }) => {
+const DropDown: React.FC<DropDownProps> = ({ user, handleLogout, isMobile, onLinkClick }) => {
   return (
     <>
       {isMobile ? (
@@ -20,17 +22,28 @@ const DropDown: React.FC<DropDownProps> = ({ user, handleLogout, isMobile }) => 
             <img src={user.picture} className="w-12 h-12 rounded-full border-2 border-[#C68EFD]" alt="profile" />
             <div>
               <p className="font-semibold text-[#8F87F1]">{user.name}</p>
-              <p className="text-sm text-gray-500">{user.email}</p>
+              {/* <p className="text-sm text-gray-500">{user.email}</p> */}
             </div>
           </div>
 
-          <button
-            onClick={handleLogout}
-            className="hover:cursor-pointer  w-full px-4 py-3 text-center font-semibold text-white rounded-xl 
-            bg-[#8F87F1] hover:bg-[#C68EFD] transition shadow-md"
+          <Link to="/profile" onClick={onLinkClick}>
+            <button
+              className="hover:cursor-pointer  w-full px-4 py-3 text-center font-semibold text-white rounded-xl 
+            bg-[#8F87F1] hover:bg-[#C68EFD] transition shadow-md mb-2"
+            >
+              View Profile
+            </button>
+          </Link>
+          <Button
+          variant="outline"
+            onClick={() => {
+                handleLogout();
+                if(onLinkClick) onLinkClick();
+            }}
+            className="w-full"
           >
             Logout
-          </button>
+          </Button>
         </div>
       ) : (
         <>
@@ -51,7 +64,15 @@ const DropDown: React.FC<DropDownProps> = ({ user, handleLogout, isMobile }) => 
             >
               <div className="p-4 border-b border-[#F3EBFF]">
                 <p className="font-semibold text-[#8F87F1]">{user.name}</p>
-                <p className="text-sm text-gray-500">{user.email}</p>
+              </div>
+              <div
+                className="hover:cursor-pointer w-full text-left px-4 py-3 text-sm font-semibold 
+                text-[#8F87F1] hover:bg-[#F4F1FF] transition border-b border-[#F3EBFF] "
+              >
+                <Link to="/profile" className="font-semibold text-[#8F87F1]">
+                  View Profile
+                </Link>
+                {/* <p className="text-sm text-gray-500">{user.email}</p> */}
               </div>
 
               <button
